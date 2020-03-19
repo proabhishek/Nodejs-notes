@@ -1,8 +1,11 @@
 'use strict';
 
-const config = require('./config');
+const APIKEY = 'xxxxxxxxxxxxxx';
+const SENDEREMAIL = sender_email;
+const SENSERNAME = sender_name;
 const mandrill = require('mandrill-api/mandrill');
-const mandrill_client = new mandrill.Mandrill(config.mandrillApiKey);
+const mandrill_client = new mandrill.Mandrill(APIKEY);
+
 
 const arrayFromObject = (content) => {
   const val = [];
@@ -13,17 +16,17 @@ const arrayFromObject = (content) => {
 };
 
 const emailContent = {
-  username: 'Rizek User'
-  // password: 'mypassword'
+  name: 'John Doe'
+  work: 'coding'
 };
 
-const sendEmail = async (emailContent, targetEmailAddress) => {
+const sendEmail = async (emailContent, targetEmailAddress,template_name) => {
   const message = {
     'subject': 'Welcome To Rizek',
-    'from_email': 'no-reply@rizek.com',
-    'from_name': 'Rizek',
+    'from_email': sender_email,
+    'from_name': sender_name,
     'to': [{
-      'email': 'abhishek@think42labs.com',
+      'email': targetEmailAddress,
       'type': 'to'
     }],
     'merge_language': 'handlebars',
@@ -34,7 +37,7 @@ const sendEmail = async (emailContent, targetEmailAddress) => {
   };
 
   const template = {
-    template_name: 'when-user-is-registered-on-the-rizek-app',
+    template_name: template_name,
     template_content: [],
     message: message,
     async: false,
@@ -51,6 +54,6 @@ const sendEmail = async (emailContent, targetEmailAddress) => {
   });
 };
 
-sendEmail(emailContent, 'theabhishek.srm@gmail.com')
+sendEmail(emailContent, 'theabhishek.srm@gmail.com', 'when-user-is-registered-on-the-rizek-app')
   .then((result) => console.log(result))
   .catch((error) => console.log("Cannot send the email, error:" + error));
